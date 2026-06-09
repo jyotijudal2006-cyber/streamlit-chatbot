@@ -74,10 +74,13 @@ class RAGService:
     def _load_store(self, session_id: str) -> None:
         if session_id in self.vector_stores:
             return
-
         index_dir = self._index_path(session_id)
         if index_dir.exists():
-            self.vector_stores[session_id] = FAISS.load_local(str(index_dir), self.embeddings)
+            self.vector_stores[session_id] = FAISS.load_local(
+                str(index_dir),
+                self.embeddings,
+                allow_dangerous_deserialization=True
+            )
             logger.info(f"Loaded existing FAISS store for session {session_id}")
 
     def _ensure_session(self, session_id: str) -> None:
