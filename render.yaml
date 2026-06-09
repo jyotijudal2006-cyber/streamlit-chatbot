@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: chatbot-backend
+    env: docker
+    rootDir: backend
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false # You will be prompted to enter this during deployment
+
+  - type: web
+    name: chatbot-frontend
+    env: docker
+    rootDir: frontend
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          type: web
+          name: chatbot-backend
+          envVarKey: RENDER_EXTERNAL_URL
